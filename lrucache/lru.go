@@ -1,6 +1,9 @@
 package lrucache
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 type LRUCache struct {
 	limit   int
@@ -9,9 +12,9 @@ type LRUCache struct {
 	mutex      *sync.Mutex
 }
 
-func NewLRU(limit int) *LRUCache{
+func NewLRU(limit int) (*LRUCache, error){
 	if limit < 1 {
-		panic("nonsensical LRU cache size specified")
+		return nil, fmt.Errorf("nonsensical LRU cache size specified\n")
 	}
 
 	return &LRUCache{
@@ -19,7 +22,7 @@ func NewLRU(limit int) *LRUCache{
 		values: make(map[int]*item, limit),
 		currentAge: 0,
 		mutex: new(sync.Mutex),
-	}
+	}, nil
 
 }
 func (c *LRUCache)IsEmpty()bool{
