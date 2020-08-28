@@ -1,7 +1,6 @@
 package main
 
-import "fmt"
-
+// プロンプトでLRUの初期化と入力を繰り返す？
 func main() {
-	fmt.Println("hello!")
+
 }
