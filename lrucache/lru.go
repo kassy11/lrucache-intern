@@ -2,17 +2,6 @@ package lrucache
 
 import "sync"
 
-// LRUのインタフェース
-type LRU interface {
-	Get(key int) int
-	Put(key, value int)
-}
-
-type item struct {
-	value int
-	age   int
-}
-
 type LRUCache struct {
 	limit   int
 	values     map[int]*item
