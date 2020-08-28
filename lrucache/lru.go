@@ -31,3 +31,11 @@ func (c *LRUCache)IsEmpty()bool{
 	}
 	return false
 }
+
+func (c *LRUCache)Put(key int, value int){
+
+}
+
+func (c *LRUCache)Get(key int)int{
+
+}

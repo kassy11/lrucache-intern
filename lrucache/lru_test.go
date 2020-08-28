@@ -5,22 +5,56 @@ import (
 	"github.com/kassy11/mylrucache/lrucache"
 )
 
-
-
+// LRU生成部分についてのUnitTest
 func TestNewLRU(t *testing.T) {
-	lru_limit_ok := []int{1, 3, 5, 7}
-	for i:=0; i<len(lru_limit_ok); i++{
-		cache, _ := lrucache.NewLRU(lru_limit_ok[i])
-		if !cache.IsEmpty(){
-			t.Errorf("Case[%d]: Cannot generate empty LRU cache", i)
+	t.Run("can create LRU with limit 1 or more", func(t *testing.T) {
+		lru_limit_ok := []int{1, 3, 5, 7}
+		for i:=0; i<len(lru_limit_ok); i++{
+			cache, _ := lrucache.NewLRU(lru_limit_ok[i])
+			if !cache.IsEmpty(){
+				t.Errorf("Case[%d]: Cannot generate empty LRU cache", i)
+			}
 		}
-	}
+	})
 
-	lru_limit_ng := []int{-1, 0, -100, -5}
-	for i:=0; i<len(lru_limit_ng); i++{
-		cache, err := lrucache.NewLRU(lru_limit_ng[i])
-		if err == nil || cache != nil{
-			t.Errorf("Case[%d]: should fail", i)
+	t.Run("cannot create LRU with limit less than 1", func(t *testing.T) {
+		lru_limit_ng := []int{-1, 0, -100, -5}
+		for i:=0; i<len(lru_limit_ng); i++{
+			cache, err := lrucache.NewLRU(lru_limit_ng[i])
+			if err == nil || cache != nil{
+				t.Errorf("Case[%d]: should fail", i)
+			}
 		}
-	}
+	})
+
+}
+
+// limitを超えないPutが行われる場合のテスト
+func TestLRUCache_SimpleGetPut(t *testing.T) {
+	limit_num := 5
+	cache, _ := lrucache.NewLRU(limit_num)
+
+	t.Run("can Put and Get", func(t *testing.T) {
+		cache.Put(1, 3)
+		if got, want := cache.Get(1), 3; got != want {
+			t.Errorf("got %v but want %v", got, want)
+		}
+	})
+
+	t.Run("update element with the same key", func(t *testing.T) {
+		// keyが同じものは更新される
+		cache.Put(2, 1)
+		cache.Put(2, 2)
+		if got, want := cache.Get(2), 2; got != want {
+			t.Errorf("got %v but want %v", got, want)
+		}
+	})
+
+	t.Run("cannnot get non-existent key", func(t *testing.T) {
+		cache.Put(1, 1)
+		cache.Put(4, 1)
+		if got, want := cache.Get(2), -1; got != want {
+			t.Errorf("got %v but want %v", got, want)
+		}
+	})
 }
