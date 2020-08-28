@@ -10,7 +10,7 @@ func TestNewEmptyLRU(t *testing.T)  {
 	lru_limit := 3
 	cache := lrucache.NewLRU(lru_limit)
 
-	if !lrucache.IsEmpty(cache){
+	if !cache.IsEmpty(){
 		t.Errorf(`Cannot generate empty LRU cache`)
 	}
 }
