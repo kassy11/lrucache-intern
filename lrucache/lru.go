@@ -2,6 +2,7 @@ package lrucache
 
 import (
 	"fmt"
+	"math"
 	"sync"
 )
 
@@ -56,6 +57,21 @@ func (c *LRUCache) Put(key int, value int) {
 		i.age = c.currentAge
 		c.currentAge++
 	}else {
+		// limitを超えたときは参照頻度の低いkeyを探す
+		if len(c.values) >= c.limit {
+			leastAge := math.MaxInt32
+			leastAgeKey := 0
+			for key, item := range c.values {
+				if item.age < leastAge {
+					leastAge = item.age
+					leastAgeKey = key
+				}
+			}
+			// 最も参照頻度の低いキーを削除する
+			if leastAgeKey != 0 {
+				delete(c.values, leastAgeKey)
+			}
+		}
 		c.values[key] = &item{
 			value: value,
 			age:   c.currentAge,

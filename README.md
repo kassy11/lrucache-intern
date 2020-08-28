@@ -1,12 +1,11 @@
 ### TDDでのLRUキャッシュの実装
 
-下記のスライドの5ページ目と6ページ目の部分を実現する。  
+LRUキャッシュについて下記のスライドの5~6ページ部分を実現する。  
 https://www.slideshare.net/t_wada/tddbc-exercise
 
-LRUとは  
-https://ja.wikipedia.org/wiki/Least_Recently_Used
-
-テスト駆動とは  
-→50 分でわかるテスト駆動開発  
-https://channel9.msdn.com/Events/de-code/2017/DO03
+### 実行方法
+1. `go get https://github.com/kassy11/mylrucache`  
+2. `cd $GOPATH/src/github.com/kassy11/mylrucache`
+3. `cd lrucache` && `go test -v --cover`
+4. `cd ..` && `go run main.go`
 
