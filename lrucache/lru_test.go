@@ -26,15 +26,13 @@ func TestNewLRU(t *testing.T) {
 			}
 		}
 	})
-
 }
 
 // limitを超えないPutが行われる場合のテスト
-func TestLRUCache_SimpleGetPut(t *testing.T) {
-	limit_num := 5
-	cache, _ := lrucache.NewLRU(limit_num)
-
+func TestLRUCache_Get_and_Put(t *testing.T) {
+	limit_num := 3
 	t.Run("can Put and Get", func(t *testing.T) {
+		cache, _ := lrucache.NewLRU(limit_num)
 		cache.Put(1, 3)
 		if got, want := cache.Get(1), 3; got != want {
 			t.Errorf("got %v but want %v", got, want)
@@ -42,6 +40,7 @@ func TestLRUCache_SimpleGetPut(t *testing.T) {
 	})
 
 	t.Run("update element with the same key", func(t *testing.T) {
+		cache, _ := lrucache.NewLRU(limit_num)
 		// keyが同じものは更新される
 		cache.Put(2, 1)
 		cache.Put(2, 2)
@@ -50,7 +49,8 @@ func TestLRUCache_SimpleGetPut(t *testing.T) {
 		}
 	})
 
-	t.Run("cannnot get non-existent key", func(t *testing.T) {
+	t.Run("cannnot Get non-existent key", func(t *testing.T) {
+		cache, _ := lrucache.NewLRU(limit_num)
 		cache.Put(1, 1)
 		cache.Put(4, 1)
 		if got, want := cache.Get(2), -1; got != want {
