@@ -6,6 +6,7 @@ type LRU interface {
 	Put(key, value int)
 }
 
+// LRUCashe構造体のmapの値を管理
 type item struct {
 	value int
 	age   int

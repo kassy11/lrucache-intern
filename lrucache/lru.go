@@ -14,6 +14,7 @@ type LRUCache struct {
 	mutex      *sync.Mutex
 }
 
+// LRUキャッシュの生成
 func NewLRU(limit int) (*LRUCache, error){
 	if limit < 1 {
 		return nil, fmt.Errorf("nonsensical LRU cache size specified\n")
@@ -25,8 +26,8 @@ func NewLRU(limit int) (*LRUCache, error){
 		currentAge: 0,
 		mutex: new(sync.Mutex),
 	}, nil
-
 }
+
 func (c *LRUCache)IsEmpty()bool{
 	if len(c.values) == 0{
 		return true
@@ -34,6 +35,7 @@ func (c *LRUCache)IsEmpty()bool{
 	return false
 }
 
+// keyの値が存在していれば取り出してageをインクリメントする
 func (c *LRUCache) Get(key int) int {
 	i, ok := c.values[key]
 	if !ok {
@@ -51,14 +53,13 @@ func (c *LRUCache) Put(key int, value int) {
 	defer c.mutex.Unlock()
 
 	i, ok := c.values[key]
-	// キーが存在する時は更新する
+	// キーが存在する時は値を更新する
 	if ok {
 		i.value = value
-		// TODO: Putしたときは使われたとみなす？
 		i.age = c.currentAge
 		c.currentAge++
 	}else {
-		// limitを超えたときは参照頻度の低いkeyを探す
+		// limitを超えたときはageの低いkeyを探す
 		if len(c.values) >= c.limit {
 			leastAge := math.MaxInt32
 			leastAgeKey := 0
@@ -68,7 +69,7 @@ func (c *LRUCache) Put(key int, value int) {
 					leastAgeKey = key
 				}
 			}
-			// 最も参照頻度の低いキーを削除する
+			// 最もageの低いキーを削除する
 			if leastAgeKey != 0 {
 				delete(c.values, leastAgeKey)
 			}
