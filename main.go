@@ -14,7 +14,7 @@ func main() {
 	cache.Put(3, 30)
 	fmt.Printf("Get(3): %d\n", cache.Get(3)) // 3
 	fmt.Printf("Get(2): %d\n", cache.Get(2)) // 2
-	fmt.Printf("Get(10): %d\n", cache.Get(10)) //
+	fmt.Printf("Get(10): %d\n", cache.Get(10)) // -1
 	cache.Put(4, 40)
 	fmt.Printf("Get(1): %d\n", cache.Get(1)) // -1
 	fmt.Printf("Get(4): %d\n", cache.Get(4)) // 4

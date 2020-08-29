@@ -6,6 +6,7 @@ import (
 	"sync"
 )
 
+// LRUキャッシュの定義
 type LRUCache struct {
 	limit   int
 	values     map[int]*item
